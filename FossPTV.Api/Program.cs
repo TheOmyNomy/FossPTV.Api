@@ -1,4 +1,5 @@
 using FossPTV.Api;
+using Microsoft.AspNetCore.HttpOverrides;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,11 @@ if (application.Environment.IsDevelopment())
 	application.UseSwagger();
 	application.UseSwaggerUI();
 }
+
+application.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+	ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 application.UseHttpsRedirection();
 application.UseAuthorization();
