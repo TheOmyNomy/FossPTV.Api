@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace FossPTV.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
 public class ApiController : ControllerBase
 {
 	private readonly PtvClient _client;
