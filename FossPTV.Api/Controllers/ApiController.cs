@@ -17,7 +17,7 @@ public class ApiController : ControllerBase
 	[Route("[action]/{term}")]
 	public async Task<IActionResult> Search(string term)
 	{
-		Search? result = await _client.Search(term);
+		Search? result = await _client.GetSearchAsync(term);
 
 		if (result == null)
 			return Problem();
