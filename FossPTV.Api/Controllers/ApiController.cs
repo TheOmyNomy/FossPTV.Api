@@ -15,10 +15,22 @@ public class ApiController : ControllerBase
 	}
 
 	[HttpGet]
-	[Route("[action]/{term}")]
-	public async Task<IActionResult> Search(string term)
+	[Route("route_types")]
+	public async Task<IActionResult> GetRouteTypeAsync()
 	{
-		SearchResult? result = await _client.GetSearchResultAsync(term);
+		RouteTypesResponse? result = await _client.GetRouteTypesAsync();
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("search/{term}")]
+	public async Task<IActionResult> GetSearchResultAsync(string term)
+	{
+		SearchResponse? result = await _client.GetSearchAsync(term);
 
 		if (result == null)
 			return Problem();
