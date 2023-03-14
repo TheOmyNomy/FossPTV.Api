@@ -1,5 +1,6 @@
-using FossPTV.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using PtvSharp;
+using PtvSharp.Models;
 
 namespace FossPTV.Api.Controllers;
 
@@ -17,7 +18,7 @@ public class ApiController : ControllerBase
 	[Route("[action]/{term}")]
 	public async Task<IActionResult> Search(string term)
 	{
-		Search? result = await _client.GetSearchAsync(term);
+		SearchResult? result = await _client.GetSearchResultAsync(term);
 
 		if (result == null)
 			return Problem();
