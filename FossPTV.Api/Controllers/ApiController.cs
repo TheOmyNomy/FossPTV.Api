@@ -28,9 +28,28 @@ public class ApiController : ControllerBase
 
 	[HttpGet]
 	[Route("search/{term}")]
-	public async Task<IActionResult> GetSearchResultAsync(string term)
+	public async Task<IActionResult> GetSearchAsync(
+		[FromRoute(Name = "term")] string term,
+		[FromQuery(Name = "route_types")] int[]? routeTypes = null,
+		[FromQuery(Name = "latitude")] float? latitude = null,
+		[FromQuery(Name = "longitude")] float? longitude = null,
+		[FromQuery(Name = "max_distance")] float? maxDistance = null,
+		[FromQuery(Name = "include_outlets")] bool? includeOutlets = null,
+		[FromQuery(Name = "match_stop_by_suburb")] bool? matchStopBySuburb = null,
+		[FromQuery(Name = "match_route_by_suburb")] bool? matchRouteBySuburb = null,
+		[FromQuery(Name = "match_stop_by_gtfs_stop_id")] bool? matchStopByGtfsStopId = null)
 	{
-		SearchResponse? result = await _client.GetSearchAsync(term);
+		SearchResponse? result = await _client.GetSearchAsync(
+			term,
+			routeTypes,
+			latitude,
+			longitude,
+			maxDistance,
+			includeOutlets,
+			matchStopBySuburb,
+			matchRouteBySuburb,
+			matchStopByGtfsStopId
+		);
 
 		if (result == null)
 			return Problem();
