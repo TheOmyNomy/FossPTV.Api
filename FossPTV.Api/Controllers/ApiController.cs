@@ -27,6 +27,42 @@ public class ApiController : ControllerBase
 	}
 
 	[HttpGet]
+	[Route("routes")]
+	public async Task<IActionResult> GetRoutesAsync(
+		[FromQuery(Name = "route_types")] int[]? routeTypes = null,
+		[FromQuery(Name = "route_name")] string? routeName = null)
+	{
+		RoutesResponse? result = await _client.GetRoutesAsync(
+			routeTypes,
+			routeName
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("routes/{route_id}")]
+	public async Task<IActionResult> GetRouteAsync(
+		[FromRoute(Name = "route_id")] int routeId,
+		[FromQuery(Name = "include_geopath")] bool? includeGeopath = null,
+		[FromQuery(Name = "geopath_utc")] DateTime? geopathUtc = null)
+	{
+		RouteResponse? result = await _client.GetRouteAsync(
+			routeId,
+			includeGeopath,
+			geopathUtc
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
 	[Route("runs/route/{route_id}")]
 	public async Task<IActionResult> GetRunsAsync(
 		[FromRoute(Name = "route_id")] int routeId,
