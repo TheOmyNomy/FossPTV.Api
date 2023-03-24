@@ -27,6 +27,86 @@ public class ApiController : ControllerBase
 	}
 
 	[HttpGet]
+	[Route("runs/route/{route_id}")]
+	public async Task<IActionResult> GetRunsAsync(
+		[FromRoute(Name = "route_id")] int routeId,
+		[FromQuery(Name = "expand")] string[]? expand = null,
+		[FromQuery(Name = "date_utc")] DateTime? dateUtc = null)
+	{
+		RunsResponse? result = await _client.GetRunsAsync(
+			routeId,
+			expand,
+			dateUtc
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("runs/route/{route_id}/route_type/{route_type}")]
+	public async Task<IActionResult> GetRunsAsync(
+		[FromRoute(Name = "route_id")] int routeId,
+		[FromRoute(Name = "route_type")] int routeType,
+		[FromQuery(Name = "expand")] string[]? expand = null,
+		[FromQuery(Name = "date_utc")] DateTime? dateUtc = null)
+	{
+		RunsResponse? result = await _client.GetRunsAsync(
+			routeId,
+			routeType,
+			expand,
+			dateUtc
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("runs/{run_ref}")]
+	public async Task<IActionResult> GetRunsAsync(
+		[FromRoute(Name = "run_ref")] string runRef,
+		[FromQuery(Name = "expand")] string[]? expand = null,
+		[FromQuery(Name = "date_utc")] DateTime? dateUtc = null)
+	{
+		RunsResponse? result = await _client.GetRunsAsync(
+			runRef,
+			expand,
+			dateUtc
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("runs/{run_ref}/route_type/{route_type}")]
+	public async Task<IActionResult> GetRunAsync(
+		[FromRoute(Name = "run_ref")] string runRef,
+		[FromRoute(Name = "route_type")] int routeType,
+		[FromQuery(Name = "expand")] string[]? expand = null,
+		[FromQuery(Name = "date_utc")] DateTime? dateUtc = null)
+	{
+		RunResponse? result = await _client.GetRunAsync(
+			runRef,
+			routeType,
+			expand,
+			dateUtc
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
 	[Route("search/{term}")]
 	public async Task<IActionResult> GetSearchAsync(
 		[FromRoute(Name = "term")] string term,
