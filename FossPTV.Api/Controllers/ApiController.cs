@@ -15,6 +15,42 @@ public class ApiController : ControllerBase
 	}
 
 	[HttpGet]
+	[Route("outlets")]
+	public async Task<IActionResult> GetOutletsAsync(
+		[FromQuery(Name = "max_results")] int? maxResults = null)
+	{
+		OutletsResponse? result = await _client.GetOutletsAsync(
+			maxResults
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("outlets/location/{latitude},{longitude}")]
+	public async Task<IActionResult> GetOutletsAsync(
+		[FromRoute(Name = "latitude")] float latitude,
+		[FromRoute(Name = "longitude")] float longitude,
+		[FromQuery(Name = "max_distance")] double? maxDistance = null,
+		[FromQuery(Name = "max_results")] int? maxResults = null)
+	{
+		OutletsResponse? result = await _client.GetOutletsAsync(
+			latitude,
+			longitude,
+			maxDistance,
+			maxResults
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
 	[Route("route_types")]
 	public async Task<IActionResult> GetRouteTypeAsync()
 	{
