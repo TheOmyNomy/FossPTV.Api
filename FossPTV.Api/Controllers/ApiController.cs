@@ -15,6 +15,105 @@ public class ApiController : ControllerBase
 	}
 
 	[HttpGet]
+	[Route("disruptions")]
+	public async Task<IActionResult> GetDisruptionsAsync(
+		[FromQuery(Name = "route_types")] int[]? routeTypes = null,
+		[FromQuery(Name = "disruption_modes")] int[]? disruptionModes = null,
+		[FromQuery(Name = "disruption_status")] string? disruptionStatus = null)
+	{
+		DisruptionsResponse? result = await _client.GetDisruptionsAsync(
+			routeTypes,
+			disruptionModes,
+			disruptionStatus
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("disruptions/route/{route_id}")]
+	public async Task<IActionResult> GetDisruptionsByRouteAsync(
+		[FromRoute(Name = "route_id")] int routeId,
+		[FromQuery(Name = "disruption_status")] string? disruptionStatus = null)
+	{
+		DisruptionsResponse? result = await _client.GetDisruptionsByRouteAsync(
+			routeId,
+			disruptionStatus
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("disruptions/route/{route_id}/stop/{stop_id}")]
+	public async Task<IActionResult> GetDisruptionsAsync(
+		[FromRoute(Name = "route_id")] int routeId,
+		[FromRoute(Name = "stop_id")] int stopId,
+		[FromQuery(Name = "disruption_status")] string? disruptionStatus = null)
+	{
+		DisruptionsResponse? result = await _client.GetDisruptionsAsync(
+			routeId,
+			stopId,
+			disruptionStatus
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("disruptions/stop/{stop_id}")]
+	public async Task<IActionResult> GetDisruptionsByStopAsync(
+		[FromRoute(Name = "stop_id")] int stopId,
+		[FromQuery(Name = "disruption_status")] string? disruptionStatus = null)
+	{
+		DisruptionsResponse? result = await _client.GetDisruptionsByStopAsync(
+			stopId,
+			disruptionStatus
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("disruptions/{disruption_id}")]
+	public async Task<IActionResult> GetDisruptionAsync(
+		[FromRoute(Name = "disruption_id")] int disruptionId)
+	{
+		DisruptionResponse? result = await _client.GetDisruptionAsync(
+			disruptionId
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("disruptions/modes")]
+	public async Task<IActionResult> GetDisruptionModesAsync()
+	{
+		DisruptionModesResponse? result = await _client.GetDisruptionModesAsync();
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
 	[Route("outlets")]
 	public async Task<IActionResult> GetOutletsAsync(
 		[FromQuery(Name = "max_results")] int? maxResults = null)
