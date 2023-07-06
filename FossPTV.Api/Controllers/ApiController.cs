@@ -15,6 +15,53 @@ public class ApiController : ControllerBase
 	}
 
 	[HttpGet]
+	[Route("directions/route/{route_id}")]
+	public async Task<IActionResult> GetDirectionsByRouteAsync(
+		[FromRoute(Name = "route_id")] int routeId)
+	{
+		DirectionsResponse? result = await _client.GetDirectionsByRouteAsync(
+			routeId
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("directions/{direction_id}")]
+	public async Task<IActionResult> GetDirectionsByDirectionAsync(
+		[FromRoute(Name = "direction_id")] int directionId)
+	{
+		DirectionsResponse? result = await _client.GetDirectionsByDirectionAsync(
+			directionId
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("directions/{direction_id}/route_type/{route_type}")]
+	public async Task<IActionResult> GetDirectionsAsync(
+		[FromRoute(Name = "direction_id")] int directionId,
+		[FromRoute(Name = "route_type")] int routeType)
+	{
+		DirectionsResponse? result = await _client.GetDirectionsAsync(
+			directionId,
+			routeType
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
 	[Route("disruptions")]
 	public async Task<IActionResult> GetDisruptionsAsync(
 		[FromQuery(Name = "route_types")] int[]? routeTypes = null,
@@ -150,18 +197,6 @@ public class ApiController : ControllerBase
 	}
 
 	[HttpGet]
-	[Route("route_types")]
-	public async Task<IActionResult> GetRouteTypeAsync()
-	{
-		RouteTypesResponse? result = await _client.GetRouteTypesAsync();
-
-		if (result == null)
-			return Problem();
-
-		return Ok(result);
-	}
-
-	[HttpGet]
 	[Route("routes")]
 	public async Task<IActionResult> GetRoutesAsync(
 		[FromQuery(Name = "route_types")] int[]? routeTypes = null,
@@ -190,6 +225,18 @@ public class ApiController : ControllerBase
 			includeGeopath,
 			geopathUtc
 		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("route_types")]
+	public async Task<IActionResult> GetRouteTypeAsync()
+	{
+		RouteTypesResponse? result = await _client.GetRouteTypesAsync();
 
 		if (result == null)
 			return Problem();
