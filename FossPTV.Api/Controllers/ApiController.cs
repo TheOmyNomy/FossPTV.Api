@@ -15,6 +15,76 @@ public class ApiController : ControllerBase
 	}
 
 	[HttpGet]
+	[Route("departures/route_type/{route_type}/stop/{stop_id}")]
+	public async Task<IActionResult> GetDeparturesAsync(
+		[FromRoute(Name = "route_type")] int routeType,
+		[FromRoute(Name = "stop_id")] int stopId,
+		[FromQuery(Name = "platform_numbers")] int[]? platformNumbers = null,
+		[FromQuery(Name = "direction_id")] int? directionId = null,
+		[FromQuery(Name = "gtfs")] bool? gtfs = null,
+		[FromQuery(Name = "date_utc")] string? dateUtc = null,
+		[FromQuery(Name = "max_results")] int? maxResults = null,
+		[FromQuery(Name = "include_cancelled")] bool? includeCancelled = null,
+		[FromQuery(Name = "look_backwards")] bool? lookBackwards = null,
+		[FromQuery(Name = "expand")] string[]? expand = null,
+		[FromQuery(Name = "include_geopath")] bool? includeGeopath = null)
+	{
+		DeparturesResponse? result = await _client.GetDeparturesAsync(
+			routeType,
+			stopId,
+			platformNumbers,
+			directionId,
+			gtfs,
+			dateUtc,
+			maxResults,
+			includeCancelled,
+			lookBackwards,
+			expand,
+			includeGeopath
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("departures/route_type/{route_type}/stop/{stop_id}/route/{route_id}")]
+	public async Task<IActionResult> GetDeparturesAsync(
+		[FromRoute(Name = "route_type")] int routeType,
+		[FromRoute(Name = "stop_id")] int stopId,
+		[FromRoute(Name = "route_id")] int routeId,
+		[FromQuery(Name = "direction_id")] int? directionId = null,
+		[FromQuery(Name = "gtfs")] bool? gtfs = null,
+		[FromQuery(Name = "date_utc")] string? dateUtc = null,
+		[FromQuery(Name = "max_results")] int? maxResults = null,
+		[FromQuery(Name = "include_cancelled")] bool? includeCancelled = null,
+		[FromQuery(Name = "look_backwards")] bool? lookBackwards = null,
+		[FromQuery(Name = "expand")] string[]? expand = null,
+		[FromQuery(Name = "include_geopath")] bool? includeGeopath = null)
+	{
+		DeparturesResponse? result = await _client.GetDeparturesAsync(
+			routeType,
+			stopId,
+			routeId,
+			directionId,
+			gtfs,
+			dateUtc,
+			maxResults,
+			includeCancelled,
+			lookBackwards,
+			expand,
+			includeGeopath
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
 	[Route("directions/route/{route_id}")]
 	public async Task<IActionResult> GetDirectionsByRouteAsync(
 		[FromRoute(Name = "route_id")] int routeId)
