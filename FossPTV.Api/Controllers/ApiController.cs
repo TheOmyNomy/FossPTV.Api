@@ -267,6 +267,33 @@ public class ApiController : ControllerBase
 	}
 
 	[HttpGet]
+	[Route("pattern/run/{run_ref}/route_type/{route_type}")]
+	public async Task<IActionResult> GetOutletsAsync(
+		[FromRoute(Name = "run_ref")] string runRef,
+		[FromRoute(Name = "route_type")] int routeType,
+		[FromQuery(Name = "expand")] string[]? expand = null,
+		[FromQuery(Name = "stop_id")] int? stopId = null,
+		[FromQuery(Name = "date_utc")] string? dateUtc = null,
+		[FromQuery(Name = "include_skipped_stops")] bool? includeSkippedStops = null,
+		[FromQuery(Name = "include_geopath")] bool? includeGeopath = null)
+	{
+		PatternResponse? result = await _client.GetPatternAsync(
+			runRef,
+			routeType,
+			expand,
+			stopId,
+			dateUtc,
+			includeSkippedStops,
+			includeGeopath
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
 	[Route("routes")]
 	public async Task<IActionResult> GetRoutesAsync(
 		[FromQuery(Name = "route_types")] int[]? routeTypes = null,
