@@ -451,4 +451,87 @@ public class ApiController : ControllerBase
 
 		return Ok(result);
 	}
+
+	[HttpGet]
+	[Route("stops/{stop_id}/rotue_type/{route_type}")]
+	public async Task<IActionResult> GetStopAsync(
+		[FromRoute(Name = "stop_id")] int stopId,
+		[FromRoute(Name = "route_type")] int routeType,
+		[FromQuery(Name = "stop_location")] bool? stopLocation = null,
+		[FromQuery(Name = "stop_amenities")] bool? stopAmenities = null,
+		[FromQuery(Name = "stop_accessibility")] bool? stopAccessibility = null,
+		[FromQuery(Name = "stop_contact")] bool? stopContact = null,
+		[FromQuery(Name = "stop_ticket")] bool? stopTicket = null,
+		[FromQuery(Name = "gtfs")] bool? gtfs = null,
+		[FromQuery(Name = "stop_staffing")] bool? stopStaffing = null,
+		[FromQuery(Name = "stop_disruptions")] bool? stopDisruptions = null)
+	{
+		StopResponse? result = await _client.GetStopAsync(
+			stopId,
+			routeType,
+			stopLocation,
+			stopAmenities,
+			stopAccessibility,
+			stopContact,
+			stopTicket,
+			gtfs,
+			stopStaffing,
+			stopDisruptions
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("stops/route/{route_id}/route_type/{route_type}")]
+	public async Task<IActionResult> GetStopAsync(
+		[FromRoute(Name = "route_id")] int routeId,
+		[FromRoute(Name = "route_type")] int routeType,
+		[FromQuery(Name = "direction_id")] int? directionId = null,
+		[FromQuery(Name = "stop_disruptions")] bool? stopDisruptions = null,
+		[FromQuery(Name = "include_geopath")] bool? includeGeopath = null,
+		[FromQuery(Name = "geopath_utc")] DateTime? geopathUtc = null)
+	{
+		StopsOnRouteResponse? result = await _client.GetStopAsync(
+			routeId,
+			routeType,
+			directionId,
+			stopDisruptions,
+			includeGeopath,
+			geopathUtc
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
+
+	[HttpGet]
+	[Route("stops/route/{route_id}/route_type/{route_type}")]
+	public async Task<IActionResult> GetStopAsync(
+		[FromRoute(Name = "latitude")] float latitude,
+		[FromRoute(Name = "longitude")] float longitude,
+		[FromQuery(Name = "route_types")] int[]? routeTypes = null,
+		[FromQuery(Name = "max_results")] int? maxResults = null,
+		[FromQuery(Name = "max_distance")] double? maxDistance = null,
+		[FromQuery(Name = "stop_disruptions")] bool? stopDisruptions = null)
+	{
+		StopsByDistanceResponse? result = await _client.GetStopAsync(
+			latitude,
+			longitude,
+			routeTypes,
+			maxResults,
+			maxDistance,
+			stopDisruptions
+		);
+
+		if (result == null)
+			return Problem();
+
+		return Ok(result);
+	}
 }
