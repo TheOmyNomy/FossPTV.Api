@@ -511,7 +511,7 @@ public class ApiController : ControllerBase
 	}
 
 	[HttpGet]
-	[Route("stops/route/{route_id}/route_type/{route_type}")]
+	[Route("/v3/stops/location/{latitude},{longitude}")]
 	public async Task<IActionResult> GetStopAsync(
 		[FromRoute(Name = "latitude")] float latitude,
 		[FromRoute(Name = "longitude")] float longitude,
