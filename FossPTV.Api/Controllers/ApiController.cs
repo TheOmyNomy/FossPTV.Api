@@ -453,7 +453,7 @@ public class ApiController : ControllerBase
 	}
 
 	[HttpGet]
-	[Route("stops/{stop_id}/rotue_type/{route_type}")]
+	[Route("stops/{stop_id}/route_type/{route_type}")]
 	public async Task<IActionResult> GetStopAsync(
 		[FromRoute(Name = "stop_id")] int stopId,
 		[FromRoute(Name = "route_type")] int routeType,
